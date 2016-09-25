@@ -1,0 +1,135 @@
+/******************************************************/
+Q1
+(a): false; rows span subset of R^n; columns of U span R^m
+(b): false since Az = 0 means inner(z,ri) =0 and thus z not in span{r_i}
+(c): false, matrix A may not be full rank
+(d): false, cj is in R^m
+(e): true by definition of V
+(f): false. Consider x in Null space(A). Then Ax = 0 < sigma_min
+     (since we're using the reduced SVD)
+(g): true, by definition of the minimum singular value.
+(h): false, singular values are related to the 2-norm, not the
+      infinity norm
+(i): true, by definition of v2 and sigma2
+(j): false. Consider A a 3X2 matrix of rank 1 (so that the reduced SVD
+    USV' =  u1 sigma v1'. Then dim(null(A)) = 1 and dim(null(A')) = 2. 
+
+
+/******************************************************/
+Q2: use formula 16.7 of Lecture 16 from the textbook.
+
+
+/******************************************************/
+Q3: use Theorem 18.1 from textbook for x (you could ignore the
+    \eta-related factors.)
+
+/******************************************************/
+Q4:
+
+LU
+(a) No,  for example if A is not invertible. 
+(b) If it exists is unique about diagonal scalings
+(c) No, there is no provably backward stable algorithm. In practice it
+can be very unstable without pivoting. Even with pivoting it formally
+backward stable, but the bounds can be huge. See theorem 22.3 from
+textbook. 
+
+SVD
+(a) Yes, it always exists
+(b) Not unique, up to signs and scalings.
+(c) No. The singular values can be computed in backward stable way,
+but not the singular vectors. They can though up to rotations on the
+singular spaces. This last part (c) is not covered in the book (see Golub & Van
+Loan Chapter 8). 
+
+CHOLESKY
+(a) No, A must be symmetric positive definite.
+(b) If it exists, it is unique. (Theorem 23.1, textbook)
+(c) Yes, Theorem 23.2
+
+QR
+(a) Yes, it always exists
+(b) It is not unique. But with proper normalization of Q and R and for
+   A being full rank, it is unique (THM 7.2). 
+(c) Yes, using householder transformations. (THM 16.1)
+
+
+/******************************************************/
+Q5:
+(a): (A): (consider P = e1 e1', where e1 is the [1;0;0;...0]).
+		 Also pythagorean theorm for 2-norm ||x|| = ||Px|| + || (I-P)x||
+		 from which A follows.
+
+(b): (B): N>M since 32/16 = 2 and 192/128 < 2. 
+
+(c): (C) See formulat 13.7 in chapter 13. 
+
+(d): It could be interepreted as B, but the correct answer following
+the definition and derivation is C. See my notes on householder.
+
+(e): (C) Cholesky. Compare the complexities of the three algos. (see
+textbook)
+
+(f) Well conditioned. Assume 2-norm condition number, since it doesn't
+change the norm of X, its condition number is one, which is as good as
+it gets. 
+
+(g) (C). See textbook. A cannot be right since the stability of the
+algorithm is not related to the condining of the instace in which isi
+applied. (B) is impossible since the exact problem may be
+ill-conditioned. 
+
+(h) (A) Pivoted QR. CG is only for SPD matrices, QR can fail without
+pivotin, and LU is only for sqare non-singular matrices and may fail
+without pivoting. 
+
+(i)(B)  See THM 24.3
+
+(k)(B) Schur. (See pg 187)  SVD has nothing to do wiht
+eigenvalues. Same for QR. Eigenvalue decomposition may not exist in
+general. 
+
+(l) (C) the inverse iteration is the fastest since the shift with the
+initial guess results in better convergence.
+
+(m) Conjugate gradient. The number of iterations is
+O(sqrt(conditionA)) so it is small; and the matrix is sparse so the
+the matrix-vector multiplication will be <O(n^2) where n is the size
+of the matrix (A is n X n). So for large n, CG will be many orders of
+magnitude faster.  
+
+(n) (B) if your initial guess is good it may require less than four
+   iterations. 
+
+(o) (C), steepest descent will take forerver because it requires
+O(cond(A)) iterations. 
+
+(p) (D). We ca't say  anything about the residual. Is the error in the
+A-norm that reduces. 
+
+/******************************************************/
+Q6. Simple calculation. 
+
+/******************************************************/
+Q7: Use eigendecomposition of A. 
+
+/******************************************************/
+Q8: Simple calculation.
+
+/******************************************************/
+Q9: Sketch:
+Since A is sparse it is better to use an iterative method. Since A is
+not symmetric, we cannot use CG. But we can use CG for the normal
+equations  AA'y = b, (and m X m) system  and then set x=A'y. 
+(since m<n)
+The number of iterations will be proportional to the sqrt(cond(AA'))
+which is (sigma_max(A)/sigma_min(A))^2 (using the SVD) so the
+complexity will be  O( n (sigma_max(A)/sigma_min(A))^2 ). 
+For the error you need to use the discussion we had for rank-deficient
+systems. For example, you can consider the error in the V'x -
+V'xapprox, where V spans the range(rows(A)). This error will be
+related to the conditioning of A (standard backward error analysis for
+square linear systems for y, and then propagate error in x.)
+Cant' say anything about null space component of X.  If you use
+regularization, the analysis is more involved. 
+
